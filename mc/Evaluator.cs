@@ -21,6 +21,7 @@ sealed class Evaluator
         {
             return (int)n.NumberToken.Value;
         }
+
         if (node is BinaryExpressionSyntax b)
         {
             var left = EvaluateExpression(b.Left);
@@ -46,6 +47,11 @@ sealed class Evaluator
             {
                 throw new Exception($"Unexpected binary operator {b.OperatorToken.Kind}");
             }
+        }
+
+        if (node is ParenthesizedExpressionSyntax p)
+        {
+            return EvaluateExpression(p.Expression);
         }
 
         throw new Exception($"Unexpected node {node.Kind}");

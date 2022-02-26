@@ -1,4 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
+
+bool showTree = false;
 while (true)
 {
     Console.Write("> ");
@@ -8,12 +10,26 @@ while (true)
         return;
     }
 
-    var parser = new Parser(line);
-    var syntaxTree = parser.Parse();
+    if (line == "#showTree")
+    {
+        showTree = !showTree;
+        Console.WriteLine(showTree ? "Showing parse trees." : "Not showing parse trees.");
+        continue;
+    }
+    else if (line == "#clf")
+    {
+        Console.Clear();
+        continue;
+    }
 
-    RunWithColoredConsole(() => PrettyPrint(syntaxTree.Root), ConsoleColor.DarkGray);
+    var syntaxTree = SyntaxTree.Parse(line);
 
-    if (!parser.Diagnostics.Any())
+    if (showTree)
+    {
+        RunWithColoredConsole(() => PrettyPrint(syntaxTree.Root), ConsoleColor.DarkGray);
+    }
+
+    if (!syntaxTree.Diagnostics.Any())
     {
         var e = new Evaluator(syntaxTree.Root);
         var result = e.Evaluate();
@@ -29,7 +45,6 @@ while (true)
             }
         }, ConsoleColor.DarkRed);
     }
-
 }
 
 void RunWithColoredConsole(Action action, ConsoleColor color)
