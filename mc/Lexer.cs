@@ -50,7 +50,10 @@ class Lexer
 
             var length = _position - start;
             var text = _text.Substring(start, length);
-            int.TryParse(text, out var value);
+            if (!int.TryParse(text, out var value))
+            {
+                _diagnostics.Add($"The number {_text} is not valid Int32");
+            }
             return new SyntaxToken(SyntaxKind.NumberToken, start, text, value);
         }
 

@@ -13,15 +13,23 @@ while (true)
 
     RunWithColoredConsole(() => PrettyPrint(syntaxTree.Root), ConsoleColor.DarkGray);
 
-    if (parser.Diagnostics.Any())
+    if (!parser.Diagnostics.Any())
     {
-        RunWithColoredConsole(() => {
+        var e = new Evaluator(syntaxTree.Root);
+        var result = e.Evaluate();
+        Console.WriteLine(result);
+    }
+    else
+    {
+        RunWithColoredConsole(() =>
+        {
             foreach (var diagnostic in syntaxTree.Diagnostics)
             {
                 Console.WriteLine(diagnostic);
             }
         }, ConsoleColor.DarkRed);
     }
+
 }
 
 void RunWithColoredConsole(Action action, ConsoleColor color)
