@@ -1,6 +1,7 @@
 class Parser
 {
     private readonly SyntaxToken[] _tokens;
+    private List<string> _diagnostics = new List<string>();
     private int _position;
 
     public Parser(string text)
@@ -20,7 +21,10 @@ class Parser
         } while (token.Kind != SyntaxKind.EndOfFileToken);
 
         _tokens = tokens.ToArray();
+        _diagnostics.AddRange(lexer.Diagnostics);
     }
+
+    public IEnumerable<string> Diagnostics => _diagnostics;
 
     private SyntaxToken Peek(int offset)
     {
@@ -46,11 +50,18 @@ class Parser
         {
             return NextToken();
         }
-
+        _diagnostics.Add($"ERROR: unexpected token: <{Current.Kind}>, expexted <{kind}>");
         return new SyntaxToken(kind, Current.Position, null, null);
     }
 
-    public ExpressionSyntax Parse()
+    public SyntaxTree Parse()
+    {
+        var expression = ParseExpression();
+        var endOfFileToken = Match(SyntaxKind.EndOfFileToken);
+        return new SyntaxTree(_diagnostics, expression, endOfFileToken);
+    }
+
+    private ExpressionSyntax ParseExpression()
     {
         var left = ParsePrimaryExpression();
         while (Current.Kind == SyntaxKind.PlusToken ||

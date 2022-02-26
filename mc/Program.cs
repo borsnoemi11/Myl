@@ -9,12 +9,33 @@ while (true)
     }
 
     var parser = new Parser(line);
-    var expression = parser.Parse();
+    var syntaxTree = parser.Parse();
 
-    var color = Console.ForegroundColor;
-    Console.ForegroundColor = ConsoleColor.DarkGray;
-    PrettyPrint(expression);
-    Console.ForegroundColor = color;
+    RunWithColoredConsole(() => PrettyPrint(syntaxTree.Root), ConsoleColor.DarkGray);
+
+    if (parser.Diagnostics.Any())
+    {
+        RunWithColoredConsole(() => {
+            foreach (var diagnostic in syntaxTree.Diagnostics)
+            {
+                Console.WriteLine(diagnostic);
+            }
+        }, ConsoleColor.DarkRed);
+    }
+}
+
+void RunWithColoredConsole(Action action, ConsoleColor color)
+{
+    var original = Console.ForegroundColor;
+    try
+    {
+        Console.ForegroundColor = color;
+        action();
+    }
+    finally
+    {
+        Console.ForegroundColor = original;
+    }   
 }
 
 static void PrettyPrint(SyntaxNode node, string indent = "", bool isLast = true)
