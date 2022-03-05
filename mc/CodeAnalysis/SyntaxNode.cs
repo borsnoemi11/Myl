@@ -1,6 +1,6 @@
 namespace Minsk.CodeAnalysis
 {
-    abstract class SyntaxNode
+    public abstract class SyntaxNode
     {
         // 1 + 2 * 3
         //

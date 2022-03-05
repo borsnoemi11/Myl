@@ -1,6 +1,6 @@
 ﻿using Minsk.CodeAnalysis;
 
-bool showTree = false;
+var showTree = false;
 while (true)
 {
     Console.Write("> ");
@@ -49,7 +49,6 @@ while (true)
 
 void RunWithColoredConsole(Action action, ConsoleColor color)
 {
-    var original = Console.ForegroundColor;
     try
     {
         Console.ForegroundColor = color;
@@ -57,7 +56,7 @@ void RunWithColoredConsole(Action action, ConsoleColor color)
     }
     finally
     {
-        Console.ForegroundColor = original;
+        Console.ResetColor();
     }   
 }
 
@@ -78,7 +77,7 @@ static void PrettyPrint(SyntaxNode node, string indent = "", bool isLast = true)
 
     Console.WriteLine();
 
-    indent += isLast ? "    " : "│   ";
+    indent += isLast ? "   " : "│   ";
     var lastChild = node.GetChildren().LastOrDefault();
 
     foreach (var child in node.GetChildren())

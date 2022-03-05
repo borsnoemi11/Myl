@@ -1,6 +1,6 @@
 namespace Minsk.CodeAnalysis
 {
-    sealed class Evaluator
+    public sealed class Evaluator
     {
         private readonly ExpressionSyntax _root;
 
@@ -19,9 +19,9 @@ namespace Minsk.CodeAnalysis
             // BinaryExpression
             // NumberExpression
 
-            if (node is NumberExpressionSyntax n)
+            if (node is LiteralExpressionSyntax n)
             {
-                return (int)n.NumberToken.Value!;
+                return (int)n.LiteralToken.Value!;
             }
 
             if (node is BinaryExpressionSyntax b)
