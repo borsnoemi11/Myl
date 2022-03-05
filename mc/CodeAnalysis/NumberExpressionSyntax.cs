@@ -5,6 +5,10 @@ namespace Minsk.CodeAnalysis
         public NumberExpressionSyntax(SyntaxToken numberToken)
         {
             NumberToken = numberToken;
+            if (NumberToken.Value is null)
+            {
+                throw new ArgumentException("numberToken.Value must not be null.");
+            }
         }
 
         public override SyntaxKind Kind => SyntaxKind.NumberExpression;

@@ -21,7 +21,7 @@ namespace Minsk.CodeAnalysis
 
             if (node is NumberExpressionSyntax n)
             {
-                return (int)n.NumberToken.Value;
+                return (int)n.NumberToken.Value!;
             }
 
             if (node is BinaryExpressionSyntax b)
