@@ -1,4 +1,5 @@
 ﻿using Minsk.CodeAnalysis;
+using Minsk.CodeAnalysis.Binding;
 using Minsk.CodeAnalysis.Syntax;
 
 var showTree = false;
@@ -24,15 +25,18 @@ while (true)
     }
 
     var syntaxTree = SyntaxTree.Parse(line);
+    var binder = new Binder();
+    var boundExpression = binder.BindExpression(syntaxTree.Root);
+    var diagnostics = syntaxTree.Diagnostics.Concat(binder.Diagnostics).ToArray();
 
     if (showTree)
     {
         RunWithColoredConsole(() => PrettyPrint(syntaxTree.Root), ConsoleColor.DarkGray);
     }
 
-    if (!syntaxTree.Diagnostics.Any())
+    if (!diagnostics.Any())
     {
-        var e = new Evaluator(syntaxTree.Root);
+        var e = new Evaluator(boundExpression);
         var result = e.Evaluate();
         Console.WriteLine(result);
     }
@@ -40,7 +44,7 @@ while (true)
     {
         RunWithColoredConsole(() =>
         {
-            foreach (var diagnostic in syntaxTree.Diagnostics)
+            foreach (var diagnostic in diagnostics)
             {
                 Console.WriteLine(diagnostic);
             }
