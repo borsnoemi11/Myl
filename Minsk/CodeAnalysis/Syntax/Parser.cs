@@ -61,7 +61,7 @@ namespace Minsk.CodeAnalysis.Syntax
                 return NextToken();
             }
             _diagnostics.ReportUnexpectedToken(Current.Span, Current.Kind, kind);
-            return new SyntaxToken(kind, Current.Position, null, null);
+            return new SyntaxToken(kind, Current.Position, Current.Text, Current.Text);
         }
 
         private ExpressionSyntax ParseExpression(int parentPrecedence = 0)
