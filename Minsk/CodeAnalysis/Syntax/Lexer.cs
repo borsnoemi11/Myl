@@ -86,19 +86,19 @@ namespace Minsk.CodeAnalysis.Syntax
                     return new SyntaxToken(SyntaxKind.CloseParenthesisToken, _position++, ")", null);
                 case '&':
                     if (Lookahead == '&')
-                        return new SyntaxToken(SyntaxKind.AmpersandAmpersandToken, _position += 2, "&&", null);
+                        return new SyntaxToken(SyntaxKind.AmpersandAmpersandToken, NextMore(2), "&&", null);
                     break;
                 case '|':
                     if (Lookahead == '|')
-                        return new SyntaxToken(SyntaxKind.PipePipeToken, _position += 2, "||", null);
+                        return new SyntaxToken(SyntaxKind.PipePipeToken, NextMore(2), "||", null);
                     break;
                 case '=':
                     if (Lookahead == '=')
-                        return new SyntaxToken(SyntaxKind.EqualsEqualsToken, _position += 2, "==", null);
+                        return new SyntaxToken(SyntaxKind.EqualsEqualsToken, NextMore(2), "==", null);
                     break;
                 case '!':
                     if (Lookahead == '=')
-                        return new SyntaxToken(SyntaxKind.BangEqualsToken, _position += 2, "!=", null);
+                        return new SyntaxToken(SyntaxKind.BangEqualsToken, NextMore(2), "!=", null);
                     else
                         return new SyntaxToken(SyntaxKind.BangToken, _position++, "!", null);
             }
@@ -118,5 +118,12 @@ namespace Minsk.CodeAnalysis.Syntax
         }
 
         private void Next() => _position++;
+
+        private int NextMore(int offset) 
+        {
+            var original = _position;
+            _position += offset;
+            return original;
+        }
     }
 }
