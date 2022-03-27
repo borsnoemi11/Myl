@@ -8,13 +8,15 @@ namespace Minsk.CodeAnalysis.Syntax
             Position = position;
             Text = text;
             Value = value;
+            var length = Text is null ? 0 : Text.Length;
+            Span = new TextSpan(Position, length);
         }
 
         public override SyntaxKind Kind { get; }
         public int Position { get; }
         public string? Text { get; }
         public object? Value { get; }
-
+        public TextSpan Span { get; }
         public override IEnumerable<SyntaxNode> GetChildren()
         {
             return Enumerable.Empty<SyntaxNode>();
