@@ -41,13 +41,26 @@ while (true)
     }
     else
     {
-        RunWithColoredConsole(() =>
+        foreach (var diagnostic in diagnostics)
         {
-            foreach (var diagnostic in diagnostics)
-            {
-                Console.WriteLine(diagnostic);
-            }
-        }, ConsoleColor.DarkRed);
+            Console.WriteLine();
+
+            RunWithColoredConsole(() => { Console.WriteLine(diagnostic); }, ConsoleColor.DarkRed);
+            
+            var prefix = line.Substring(0, diagnostic.Span.Start);
+            var error = line.Substring(diagnostic.Span.Start, diagnostic.Span.Length);
+            var suffix = line.Substring(diagnostic.Span.End);
+
+            Console.Write("    ");
+            Console.Write(prefix);
+
+            RunWithColoredConsole(() => { Console.Write(error); }, ConsoleColor.DarkRed);
+
+            Console.Write(suffix);
+            Console.WriteLine();
+        }
+
+        Console.WriteLine();
     }
 }
 
