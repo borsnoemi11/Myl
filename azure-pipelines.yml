@@ -13,7 +13,10 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  tests: './Minsk.Tests/Minsk.Tests.csproj'
 
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+  displayName: 'Build - $(buildConfiguration)'
+- script: dotnet test $(tests)
+  displayName: 'Run tests'
