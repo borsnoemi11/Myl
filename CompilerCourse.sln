@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mc", "mc\mc.csproj", "{B8816666-0EA5-49A9-8C8C-CBF7D515218D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minsk", "Minsk\Minsk.csproj", "{E91FB314-0438-46C6-9014-06276683FF48}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{B8816666-0EA5-49A9-8C8C-CBF7D515218D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8816666-0EA5-49A9-8C8C-CBF7D515218D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8816666-0EA5-49A9-8C8C-CBF7D515218D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E91FB314-0438-46C6-9014-06276683FF48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E91FB314-0438-46C6-9014-06276683FF48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E91FB314-0438-46C6-9014-06276683FF48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E91FB314-0438-46C6-9014-06276683FF48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
