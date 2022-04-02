@@ -95,7 +95,8 @@ namespace Minsk.CodeAnalysis.Syntax
                 case '=':
                     if (Lookahead == '=')
                         return new SyntaxToken(SyntaxKind.EqualsEqualsToken, NextMore(2), "==", null);
-                    break;
+                    else
+                        return new SyntaxToken(SyntaxKind.EqualsToken, _position++, "=", null);
                 case '!':
                     if (Lookahead == '=')
                         return new SyntaxToken(SyntaxKind.BangEqualsToken, NextMore(2), "!=", null);

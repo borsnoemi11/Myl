@@ -1,8 +1,9 @@
 ﻿using Minsk.CodeAnalysis;
-using Minsk.CodeAnalysis.Binding;
 using Minsk.CodeAnalysis.Syntax;
 
 var showTree = false;
+var variables = new Dictionary<string, object>();
+
 while (true)
 {
     Console.Write("> ");
@@ -26,7 +27,7 @@ while (true)
 
     var syntaxTree = SyntaxTree.Parse(line);
     var compilation = new Compilation(syntaxTree);
-    var result = compilation.Evaluate();
+    var result = compilation.Evaluate(variables);
 
     var diagnostics = result.Diagnostics;
 
