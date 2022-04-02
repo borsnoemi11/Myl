@@ -55,7 +55,7 @@ namespace Minsk.CodeAnalysis.Binding
                 return new BoundLiteralExpression(0);
             }
 
-            var type = typeof(int);
+            var type = value.GetType();
             return new BoundVariableExpression(name, type);
         }
 
@@ -63,6 +63,23 @@ namespace Minsk.CodeAnalysis.Binding
         {
             var name = syntax.IdentifierToken.Text;
             var boundExpression = BindExpression(syntax.Expression);
+
+            // This was added in the video but the defaultValue will be overwritten anyway so why?
+
+            // var defaultValue =
+            //     boundExpression.Type == typeof(int)
+            //         ? (object)0
+            //         : boundExpression.Type == typeof(bool)
+            //             ? (object)false
+            //             : null;
+
+            // if (defaultValue is null)
+            // {
+            //     throw new Exception($"Unsupported variable type: {boundExpression.Type}");
+            // }
+
+            // _variables[name] = defaultValue;
+
             return new BoundAssignmentExpression(name, boundExpression);
         }
 
