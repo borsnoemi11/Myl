@@ -72,8 +72,9 @@ namespace Minsk.CodeAnalysis.Binding
 
             var variable = new VariableSymbol(name, boundExpression.Type);
 
-            // This was added in the video but the null will be overwritten anyway so why?
-            //_variables[variable] = null;
+            // The value will be overwritten but initializing it in the _variables dictionary 
+            // makes it possible to inline new variable assignment and immediately work with it
+            _variables[variable] = 0;
 
             return new BoundAssignmentExpression(variable, boundExpression);
         }
