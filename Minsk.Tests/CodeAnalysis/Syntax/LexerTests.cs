@@ -8,6 +8,24 @@ namespace Minsk.Tests.CodeAnalysis.Syntax;
 
 public class LexerTests
 {
+    [Fact]
+    public void Lexer_Tests_AllTokens()
+    {
+        var tokenKinds = Enum.GetValues(typeof(SyntaxKind))
+                              .Cast<SyntaxKind>()
+                              .Where(k => k.ToString().EndsWith("Keyword") ||
+                                          k.ToString().EndsWith("Token"));
+
+        var testedTokenKinds = GetTokens().Concat(GetSeparatorTokens()).Select(t => t.kind);
+
+        var unTestedTokenKinds = new SortedSet<SyntaxKind>(tokenKinds);
+        unTestedTokenKinds.Remove(SyntaxKind.BadToken);
+        unTestedTokenKinds.Remove(SyntaxKind.EndOfFileToken);
+        unTestedTokenKinds.ExceptWith(testedTokenKinds);
+
+        Assert.Empty(unTestedTokenKinds);
+    }
+
     [Theory]
     [MemberData(nameof(GetTokensData))]
     public void Lexer_Lexes_Token(SyntaxKind kind, string text)
@@ -91,7 +109,7 @@ public class LexerTests
             (SyntaxKind.NumberToken, "123"),
             (SyntaxKind.IdentifierToken, "a"),
             (SyntaxKind.IdentifierToken, "abc"),
-            };
+        };
 
         return fixedTokens.Concat(dynamicTokens);
     }
