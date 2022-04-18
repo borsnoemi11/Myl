@@ -1,19 +1,21 @@
+using System.Collections.Immutable;
+
 namespace Minsk.CodeAnalysis
 {
     public sealed class EvaluationResult
     {
-        public EvaluationResult(IEnumerable<Diagnostic> diagnostics, object? value)
+        public EvaluationResult(ImmutableArray<Diagnostic> diagnostics, object? value)
         {
-            if (value is null && (diagnostics is null || !diagnostics.Any()))
+            if (value is null && !diagnostics.Any())
             {
                 throw new ArgumentException($"Parameter '{nameof(diagnostics)}' cannot be empty if the value is null.");
             }
 
-            Diagnostics = diagnostics.ToArray();
+            Diagnostics = diagnostics;
             Value = value;
         }
 
-        public IReadOnlyList<Diagnostic> Diagnostics { get; }
+        public ImmutableArray<Diagnostic> Diagnostics { get; }
         
         public object? Value { get; }
     }
