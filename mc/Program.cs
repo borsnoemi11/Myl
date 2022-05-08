@@ -42,11 +42,22 @@ while (true)
     }
     else
     {
+        var text = syntaxTree.Text;
+
         foreach (var diagnostic in diagnostics)
         {
+            var lineIndex = text.GetLineIndex(diagnostic.Span.Start);
+            var lineNumber = lineIndex + 1;
+            var sourceLine = text.Lines[lineIndex];
+            var characterIndexInLine = diagnostic.Span.Start - sourceLine.Start + 1;
+
             Console.WriteLine();
 
-            RunWithColoredConsole(() => { Console.WriteLine(diagnostic); }, ConsoleColor.DarkRed);
+            RunWithColoredConsole(() => 
+                { 
+                    Console.Write($"({lineNumber}, {characterIndexInLine}): "); 
+                    Console.WriteLine(diagnostic);
+                }, ConsoleColor.DarkRed);
             
             var prefix = line.Substring(0, diagnostic.Span.Start);
             var error = line.Substring(diagnostic.Span.Start, diagnostic.Span.Length);
