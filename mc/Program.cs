@@ -9,11 +9,14 @@ var textBuilder = new StringBuilder();
 
 while (true)
 {
-    if (textBuilder.Length == 0)
-        Console.Write("> ");
-    else
-        Console.Write("| ");
-
+    RunWithColoredConsole(() => 
+        {
+            if (textBuilder.Length == 0)
+                Console.Write("» ");
+            else
+                Console.Write(". ");
+        }, ConsoleColor.Green);
+    
     var input = Console.ReadLine();
     var isBlank = string.IsNullOrWhiteSpace(input);
 
@@ -55,7 +58,7 @@ while (true)
 
     if (!diagnostics.Any())
     {
-        Console.WriteLine(result.Value);
+        RunWithColoredConsole(() => Console.WriteLine(result.Value), ConsoleColor.Magenta);
     }
     else
     {

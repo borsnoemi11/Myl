@@ -65,18 +65,21 @@ namespace Minsk.CodeAnalysis.Syntax
 
         private static void PrettyPrint(TextWriter writer, SyntaxNode node, string indent = "", bool isLast = true)
         {
-            // └── ├──  │
-
+            var isToConsole = writer == Console.Out;
             var marker = isLast ? "└──" : "├──";
             writer.Write(indent);
-            writer.Write(marker);
-            writer.Write(node.Kind);
 
-            if (node is SyntaxToken t && t.Value is not null)
-            {
-                writer.Write(" ");
-                writer.Write(t.Value);
-            }
+            RunWithColoredConsole(isToConsole, () => writer.Write(marker), ConsoleColor.DarkGray);
+            RunWithColoredConsole(isToConsole, () => 
+                {
+                    writer.Write(node.Kind);
+                    if (node is SyntaxToken t && t.Value is not null)
+                    {
+                        writer.Write(" ");
+                        writer.Write(t.Value);
+                    }
+                }, 
+                node is SyntaxToken ? ConsoleColor.Blue : ConsoleColor.Cyan);
 
             writer.WriteLine();
 
@@ -87,7 +90,27 @@ namespace Minsk.CodeAnalysis.Syntax
             {
                 PrettyPrint(writer, child, indent, child == lastChild);
             }
+
+            static void RunWithColoredConsole(bool isToConsole, Action action, ConsoleColor color)
+            {
+                if (!isToConsole)
+                {
+                    action();
+                    return;
+                }
+
+                try
+                {
+                    Console.ForegroundColor = color;
+                    action();
+                }
+                finally
+                {
+                    Console.ResetColor();
+                }   
+            }
         }
+        
         
     }
 }
