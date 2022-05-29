@@ -32,6 +32,7 @@ public class ParserTests
 
             using (var e = new AssertingEnumerator(expression))
             {
+                e.AssertNode(SyntaxKind.CompilationUnit);
                 e.AssertNode(SyntaxKind.BinaryExpression);
                     e.AssertNode(SyntaxKind.BinaryExpression);
                         e.AssertNode(SyntaxKind.NameExpression);
@@ -42,6 +43,7 @@ public class ParserTests
                     e.AssertToken(op2, op2Text);
                     e.AssertNode(SyntaxKind.NameExpression);
                         e.AssertToken(SyntaxKind.IdentifierToken, "c");
+                e.AssertToken(SyntaxKind.EndOfFileToken, "");
             }
         }
         else 
@@ -54,6 +56,7 @@ public class ParserTests
 
             using (var e = new AssertingEnumerator(expression))
             {
+                e.AssertNode(SyntaxKind.CompilationUnit);
                 e.AssertNode(SyntaxKind.BinaryExpression);
                     e.AssertNode(SyntaxKind.NameExpression);
                         e.AssertToken(SyntaxKind.IdentifierToken, "a");
@@ -64,6 +67,7 @@ public class ParserTests
                         e.AssertToken(op2, op2Text);
                         e.AssertNode(SyntaxKind.NameExpression);
                             e.AssertToken(SyntaxKind.IdentifierToken, "c");
+                e.AssertToken(SyntaxKind.EndOfFileToken, "");
             }
         }
     }
@@ -94,6 +98,7 @@ public class ParserTests
 
             using (var e = new AssertingEnumerator(expression))
             {
+                e.AssertNode(SyntaxKind.CompilationUnit);
                 e.AssertNode(SyntaxKind.BinaryExpression);
                     e.AssertNode(SyntaxKind.UnaryExpression);
                         e.AssertToken(unaryKind, unaryText);
@@ -102,6 +107,7 @@ public class ParserTests
                     e.AssertToken(binaryKind, binaryText);
                     e.AssertNode(SyntaxKind.NameExpression);
                         e.AssertToken(SyntaxKind.IdentifierToken, "b");
+                e.AssertToken(SyntaxKind.EndOfFileToken, "");
             }
         }
         else 
@@ -114,6 +120,7 @@ public class ParserTests
 
             using (var e = new AssertingEnumerator(expression))
             {
+                e.AssertNode(SyntaxKind.CompilationUnit);
                 e.AssertNode(SyntaxKind.UnaryExpression);
                     e.AssertToken(unaryKind, unaryText);
                     e.AssertNode(SyntaxKind.BinaryExpression);
@@ -122,6 +129,7 @@ public class ParserTests
                         e.AssertToken(binaryKind, binaryText);
                         e.AssertNode(SyntaxKind.NameExpression);
                             e.AssertToken(SyntaxKind.IdentifierToken, "b");
+                e.AssertToken(SyntaxKind.EndOfFileToken, "");
             }
         }
     }
