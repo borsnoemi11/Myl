@@ -35,11 +35,11 @@ namespace Minsk.CodeAnalysis.Syntax
 
         private SyntaxToken Current => Peek(0);
 
-        public SyntaxTree Parse()
+        public CompilationUnitSyntax ParseCompilationUnit()
         {
             var expression = ParseExpression();
             var endOfFileToken = MatchToken(SyntaxKind.EndOfFileToken);
-            return new SyntaxTree(_text, _diagnostics.ToImmutableArray(), expression, endOfFileToken);
+            return new CompilationUnitSyntax(expression, endOfFileToken);
         }
 
         private SyntaxToken Peek(int offset)
