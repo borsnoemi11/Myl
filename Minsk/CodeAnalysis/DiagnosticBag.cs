@@ -63,6 +63,12 @@ namespace Minsk.CodeAnalysis
             Report(span, message);
         }
 
+        internal void ReportCannotAssign(TextSpan span, string name)
+        {
+            var message = $"Variable '{name}' is read-only and cannot be assigned to.";
+            Report(span, message);
+        }
+
         private void Report(TextSpan span, string message)
         {
             var diagnostic = new Diagnostic(span, message);
