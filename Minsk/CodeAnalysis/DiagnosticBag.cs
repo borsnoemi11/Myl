@@ -51,6 +51,18 @@ namespace Minsk.CodeAnalysis
             Report(span, message);
         }
 
+        internal void ReportVariableAlreadyDeclared(TextSpan span, string name)
+        {
+            var message = $"Variable '{name}' is already declared.";
+            Report(span, message);
+        }
+
+        internal void ReportCannotConvert(TextSpan span, Type fromType, Type toType)
+        {
+            var message = $"Cannot convert type '{fromType}' to '{toType}'.";
+            Report(span, message);
+        }
+
         private void Report(TextSpan span, string message)
         {
             var diagnostic = new Diagnostic(span, message);

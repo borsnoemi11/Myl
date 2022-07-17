@@ -6,6 +6,7 @@ using Minsk.CodeAnalysis.Text;
 var showTree = false;
 var variables = new Dictionary<VariableSymbol, object>();
 var textBuilder = new StringBuilder();
+Compilation? previous = null;
 
 while (true)
 {
@@ -37,6 +38,12 @@ while (true)
             Console.Clear();
             continue;
         }
+        else if (input == "#reset")
+        {
+            previous = null;
+            Console.WriteLine("Kernel reset.");
+            continue;
+        }
     }
 
     textBuilder.AppendLine(input);
@@ -46,7 +53,9 @@ while (true)
     if (!isBlank && syntaxTree.Diagnostics.Any())
         continue;
 
-    var compilation = new Compilation(syntaxTree);
+    var compilation = previous is null 
+                        ? new Compilation(syntaxTree)
+                        : previous.ContinueWith(syntaxTree);
     var result = compilation.Evaluate(variables);
 
     var diagnostics = result.Diagnostics;
@@ -59,6 +68,7 @@ while (true)
     if (!diagnostics.Any())
     {
         RunWithColoredConsole(() => Console.WriteLine(result.Value), ConsoleColor.Magenta);
+        previous = compilation;
     }
     else
     {
