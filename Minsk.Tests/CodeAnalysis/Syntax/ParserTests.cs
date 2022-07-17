@@ -15,7 +15,7 @@ public class ParserTests
         var op1Text = SyntaxFacts.GetText(op1);
         var op2Text = SyntaxFacts.GetText(op2);
         var text = $"a {op1Text} b {op2Text} c";
-        var expression = SyntaxTree.Parse(text).Root;
+        var expression = ParseExpression(text);
 
         if (op1Text is null || op2Text is null)
         {
@@ -32,7 +32,6 @@ public class ParserTests
 
             using (var e = new AssertingEnumerator(expression))
             {
-                e.AssertNode(SyntaxKind.CompilationUnit);
                 e.AssertNode(SyntaxKind.BinaryExpression);
                     e.AssertNode(SyntaxKind.BinaryExpression);
                         e.AssertNode(SyntaxKind.NameExpression);
@@ -43,7 +42,6 @@ public class ParserTests
                     e.AssertToken(op2, op2Text);
                     e.AssertNode(SyntaxKind.NameExpression);
                         e.AssertToken(SyntaxKind.IdentifierToken, "c");
-                e.AssertToken(SyntaxKind.EndOfFileToken, "");
             }
         }
         else 
@@ -56,7 +54,6 @@ public class ParserTests
 
             using (var e = new AssertingEnumerator(expression))
             {
-                e.AssertNode(SyntaxKind.CompilationUnit);
                 e.AssertNode(SyntaxKind.BinaryExpression);
                     e.AssertNode(SyntaxKind.NameExpression);
                         e.AssertToken(SyntaxKind.IdentifierToken, "a");
@@ -67,7 +64,6 @@ public class ParserTests
                         e.AssertToken(op2, op2Text);
                         e.AssertNode(SyntaxKind.NameExpression);
                             e.AssertToken(SyntaxKind.IdentifierToken, "c");
-                e.AssertToken(SyntaxKind.EndOfFileToken, "");
             }
         }
     }
@@ -81,7 +77,7 @@ public class ParserTests
         var unaryText = SyntaxFacts.GetText(unaryKind);
         var binaryText = SyntaxFacts.GetText(binaryKind);
         var text = $"{unaryText} a {binaryText} b";
-        var expression = SyntaxTree.Parse(text).Root;
+        var expression = ParseExpression(text);
 
         if (unaryText is null || binaryText is null)
         {
@@ -98,7 +94,6 @@ public class ParserTests
 
             using (var e = new AssertingEnumerator(expression))
             {
-                e.AssertNode(SyntaxKind.CompilationUnit);
                 e.AssertNode(SyntaxKind.BinaryExpression);
                     e.AssertNode(SyntaxKind.UnaryExpression);
                         e.AssertToken(unaryKind, unaryText);
@@ -107,7 +102,6 @@ public class ParserTests
                     e.AssertToken(binaryKind, binaryText);
                     e.AssertNode(SyntaxKind.NameExpression);
                         e.AssertToken(SyntaxKind.IdentifierToken, "b");
-                e.AssertToken(SyntaxKind.EndOfFileToken, "");
             }
         }
         else 
@@ -120,7 +114,6 @@ public class ParserTests
 
             using (var e = new AssertingEnumerator(expression))
             {
-                e.AssertNode(SyntaxKind.CompilationUnit);
                 e.AssertNode(SyntaxKind.UnaryExpression);
                     e.AssertToken(unaryKind, unaryText);
                     e.AssertNode(SyntaxKind.BinaryExpression);
@@ -129,9 +122,14 @@ public class ParserTests
                         e.AssertToken(binaryKind, binaryText);
                         e.AssertNode(SyntaxKind.NameExpression);
                             e.AssertToken(SyntaxKind.IdentifierToken, "b");
-                e.AssertToken(SyntaxKind.EndOfFileToken, "");
             }
         }
+    }
+
+    private static ExpressionSyntax ParseExpression(string text)
+    {
+        var syntaxTree = SyntaxTree.Parse(text);
+        return syntaxTree.Root.Expression;
     }
 
     private static IEnumerable<object[]> GetBinaryOperatorPairsData()
