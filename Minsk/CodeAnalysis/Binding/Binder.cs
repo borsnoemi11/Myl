@@ -70,7 +70,7 @@ namespace Minsk.CodeAnalysis.Binding
 
             if (!_scope.TryDeclare(variable))
             {
-                _diagnostics.ReportVariableAlreadyDeclared(syntax.Initializer.Span, name);
+                _diagnostics.ReportVariableAlreadyDeclared(syntax.Identifier.Span, name);
             }
 
             return new BoundVariableDeclaration(variable, initializer);
